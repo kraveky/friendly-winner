@@ -1,0 +1,92 @@
+import os
+import shutil
+
+def print_dir_contents(path):
+    print(f"Contents of {path}:")
+    for entry in os.scandir(path):
+        if entry.is_file():
+            print(f"- {entry.name} ({os.path.getsize(entry.path)} bytes)")
+        elif entry.is_dir():
+            print(f"- {entry.name}/")
+
+def list_files(path='.'):
+    print_dir_contents(path)
+
+def make_dir(path):
+    os.mkdir(path)
+    print(f"Created directory {path}")
+
+def delete_file(path):
+    os.remove(path)
+    print(f"Deleted file {path}")
+
+def delete_dir(path):
+    shutil.rmtree(path)
+    print(f"Deleted directory {path}")
+
+def copy_file(src_path, dest_path):
+    shutil.copy2(src_path, dest_path)
+    print(f"Copied file {src_path} to {dest_path}")
+
+def move_file(src_path, dest_path):
+    shutil.move(src_path, dest_path)
+    print(f"Moved file {src_path} to {dest_path}")
+
+def rename_file(src_path, new_name):
+    base_path = os.path.dirname(src_path)
+    dest_path = os.path.join(base_path, new_name)
+    os.rename(src_path, dest_path)
+    print(f"Renamed file {src_path} to {dest_path}")
+
+def change_dir(path):
+    os.chdir(path)
+    print(f"Changed working directory to {path}")
+
+def main():
+    print("Welcome to the command-line file manager!")
+    while True:
+        print("\nPlease select an action:")
+        print("1. List files in current directory")
+        print("2. Make a new directory")
+        print("3. Delete a file")
+        print("4. Delete a directory")
+        print("5. Copy a file")
+        print("6. Move a file")
+        print("7. Rename a file")
+        print("8. Change directory")
+        print("9. Quit")
+        choice = input("> ")
+        if choice == '1':
+            list_files()
+        elif choice == '2':
+            path = input("Enter the path of the new directory: ")
+            make_dir(path)
+        elif choice == '3':
+            path = input("Enter the path of the file to delete: ")
+            delete_file(path)
+        elif choice == '4':
+            path = input("Enter the path of the directory to delete: ")
+            delete_dir(path)
+        elif choice == '5':
+            src_path = input("Enter the path of the file to copy: ")
+            dest_path = input("Enter the destination path: ")
+            copy_file(src_path, dest_path)
+        elif choice == '6':
+            src_path = input("Enter the path of the file to move: ")
+            dest_path = input("Enter the destination path: ")
+            move_file(src_path, dest_path)
+        elif choice == '7':
+            src_path = input("Enter the path of the file to rename: ")
+            new_name = input("Enter the new name: ")
+            rename_file(src_path, new_name)
+        elif choice == '8':
+            path = input("Enter the new working directory: ")
+            change_dir(path)
+        elif choice == '9':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == '__main__':
+    main()
